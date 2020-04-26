@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Use Dynamic Web TWAIN to Scan With Thumbnails View</title>
+    <script src="https://unpkg.com/dwt/dist/dynamsoft.webtwain.min.js"></script>
+  </head>
+
+  <body>
+    <div style="padding: 50px 0; height: auto;">
+      <div style="width: 980px; margin: 0 auto;">
+        <div style="width:90%;padding: 15px;">
+          <select style="width:40%; height:34px;" id="source">
+            <option disabled selected>Select A Device</option>
+          </select>
+          <input
+            type="button"
+            style="width:25%;height:34px;"
+            value="Scan"
+            onclick="AcquireImage();"
+          />
+          <input
+            type="button"
+            style="width:25%;height:34px;"
+            value="Load"
+            onclick="LoadImage();"
+          />
+        </div>
+        <div style="width:90%;">
+          <div
+            id="dwtcontrolContainer"
+            style="float: left; position:relative; margin-right:3%;width:20%"
+          ></div>
+          <div
+            id="dwtcontrolContainerLargeViewer"
+            style="float: left; position:relative;width:75%"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      window.onload = function() {
+        if (
+          Dynamsoft &&
+          (!Dynamsoft.Lib.env.bWin || !Dynamsoft.Lib.product.bChromeEdition)
+        ) {
+          var ObjString = []
+          ObjString.push('<div style="padding:0 20px;">')
+          ObjString.push(
+            "This demo page doesn't support your current browser. Try a modern browsers like Chrome, Firefox, etc. Or contact Dynamsoft Support for more information."
+          )
+          ObjString.push('</div>')
+          Dynamsoft.WebTwainEnv.ShowDialog(400, 180, ObjString.join(''))
+          if (document.getElementsByClassName('dynamsoft-dialog-close'))
+            document.getElementsByClassName(
+              'dynamsoft-dialog-close'
+            )[0].style.display = 'none'
+        } else {
+          Dynamsoft.WebTwainEnv.AutoLoad = false
+          Dynamsoft.WebTwainEnv.Containers = [
+            {
+              ContainerId: 'dwtcontrolContainer',
+              Width: '100%',
+              Height: '500px'
+            }
+          ]
+          Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', function() {
+            Dynamsoft_OnReady()
+          })
+          Dynamsoft.WebTwainEnv.Trial = true
+          Dynamsoft.WebTwainEnv.ProductKey =
+            't0141cQMAACCG0RYaq6/crIMV/JeasnfXv3IDw4WHrIG1i57UR2yz+mIJxFHPd0KPR/VeuQLre6euCU2VfKVoSmcv+nGWYJAERq/MugsZzYKpzJHEaPTWshv/Y1b5+ZcEc2zGiXKjBeO5YZpHEf29Ic/8MVownhumeQqZj2ZopGC0YDw3xLVx8+Zm8gY1ma8m'
+
+          Dynamsoft.WebTwainEnv.Load()
+        }
+      }
+      var DWObject
+
+      function Dynamsoft_OnReady() {
+        // Get the Dynamic Web TWAIN object that is embeded in the div with id 'dwtcontrolContainer'
+        DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtcontrolContainer')
+        if (DWObject) {
+          Dynamsoft.WebTwainEnv.CreateDWTObject(
+            'dwtcontrolContainerLargeViewer',
+            function(dwtObject) {
+              DWObjectLargeViewer = dwtObject
+              if (DWObjectLargeViewer) {
+                DWObjectLargeViewer.Width = '100%'
+                DWObjectLargeViewer.Height = 500
+                // Set the view to hold one image only
+                DWObjectLargeViewer.SetViewMode(-1, -1)
+                // Set it to hold one image only
+                DWObjectLargeViewer.MaxImagesInBuffer = 1
+              }
+            },
+            function(errorString) {
+              console.log(errorString)
+            }
+          )
+          // Set the view to show four images
+          DWObject.SetViewMode(1, 4)
+
+          // Add the sources in a drop-down list
+          var count = DWObject.SourceCount
+          for (var i = 0; i < count; i++)
+            document
+              .getElementById('source')
+              .options.add(new Option(DWObject.GetSourceNameItems(i), i))
+          // Register the events
+          DWObject.RegisterEvent('OnPostTransfer', Dynamsoft_OnPostTransfer)
+          DWObject.RegisterEvent('OnPostLoad', Dynamsoft_OnPostLoad)
+          DWObject.RegisterEvent('OnMouseClick', Dynamsoft_OnMouseClick)
+        }
+      }
+
+      function AcquireImage() {
+        if (DWObject) {
+          DWObject.SelectSourceByIndex(
+            document.getElementById('source').selectedIndex - 1
+          )
+          DWObject.OpenSource()
+          DWObject.IfDisableSourceAfterAcquire = true
+          DWObject.AcquireImage()
+        }
+      }
+
+      // Callback functions for async APIs
+      function OnSuccess() {
+        console.log('successful')
+      }
+
+      function OnFailure(errorCode, errorString) {
+        alert(errorString)
+      }
+
+      function LoadImage() {
+        if (DWObject) {
+          // Open the system's file dialog to load image
+          DWObject.IfShowFileDialog = true
+          // Load images in all supported formats (.bmp, .jpg, .tif, .png, .pdf).
+          DWObject.LoadImageEx(
+            '',
+            EnumDWT_ImageType.IT_ALL,
+            OnSuccess,
+            OnFailure
+          )
+        }
+      }
+
+      function Dynamsoft_OnPostTransfer() {
+        updateLargeViewer()
+      }
+
+      function Dynamsoft_OnPostLoad(path, name, type) {
+        updateLargeViewer()
+      }
+
+      function Dynamsoft_OnMouseClick() {
+        updateLargeViewer()
+      }
+
+      function updateLargeViewer() {
+        DWObject.CopyToClipboard(DWObject.CurrentImageIndexInBuffer)
+        // Load the image from Clipboard into the large viewer.
+        DWObjectLargeViewer.LoadDibFromClipboard()
+      }
+    </script>
+  </body>
+</html>
