@@ -65,6 +65,8 @@ export default {
       this.Dynamsoft_OnReady()
     })
     Dynamsoft.WebTwainEnv.Trial = true
+    // Dynamsoft.WebTwainEnv.ProductKey =
+    //   'f0068NQAAACyMptTIXKyBr6qIbXRS0lZrq8O2MOXUBCZXgQZoS2BC73rJ+yg/UsO+u2RD2ZQaJi6gahHxi0FPUZ44ufcaeg8=;f0068NQAAAIGJBX/F85UzyTyklyoF7gYgF5WSbZqyVGNoITEDqIBePdvec7c75ptkqJs6VlWEYLjNm2QDpWnGsIzAF+3Mlaw='
     Dynamsoft.WebTwainEnv.ProductKey =
       't0141cQMAACCG0RYaq6/crIMV/JeasnfXv3IDw4WHrIG1i57UR2yz+mIJxFHPd0KPR/VeuQLre6euCU2VfKVoSmcv+nGWYJAERq/MugsZzYKpzJHEaPTWshv/Y1b5+ZcEc2zGiXKjBeO5YZpHEf29Ic/8MVownhumeQqZj2ZopGC0YDw3xLVx8+Zm8gY1ma8m'
   },
@@ -81,30 +83,10 @@ export default {
       this.Dynamsoft_OnReady()
     })
     Dynamsoft.WebTwainEnv.Trial = true
-    Dynamsoft.WebTwainEnv.ProductKey =
-      'f0068NQAAACyMptTIXKyBr6qIbXRS0lZrq8O2MOXUBCZXgQZoS2BC73rJ+yg/UsO+u2RD2ZQaJi6gahHxi0FPUZ44ufcaeg8=;f0068NQAAAIGJBX/F85UzyTyklyoF7gYgF5WSbZqyVGNoITEDqIBePdvec7c75ptkqJs6VlWEYLjNm2QDpWnGsIzAF+3Mlaw='
     // Dynamsoft.WebTwainEnv.ProductKey =
-    //   't0141cQMAACCG0RYaq6/crIMV/JeasnfXv3IDw4WHrIG1i57UR2yz+mIJxFHPd0KPR/VeuQLre6euCU2VfKVoSmcv+nGWYJAERq/MugsZzYKpzJHEaPTWshv/Y1b5+ZcEc2zGiXKjBeO5YZpHEf29Ic/8MVownhumeQqZj2ZopGC0YDw3xLVx8+Zm8gY1ma8m'
-
-    Dynamsoft.WebTwainEnv.Load()
-  },
-  updated() {
-    Dynamsoft.WebTwainEnv.AutoLoad = false
-    Dynamsoft.WebTwainEnv.Containers = [
-      {
-        ContainerId: 'dwtcontrolContainer',
-        Width: '100%',
-        Height: '500px'
-      }
-    ]
-    Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', () => {
-      this.Dynamsoft_OnReady()
-    })
-    Dynamsoft.WebTwainEnv.Trial = true
+    //   'f0068NQAAACyMptTIXKyBr6qIbXRS0lZrq8O2MOXUBCZXgQZoS2BC73rJ+yg/UsO+u2RD2ZQaJi6gahHxi0FPUZ44ufcaeg8=;f0068NQAAAIGJBX/F85UzyTyklyoF7gYgF5WSbZqyVGNoITEDqIBePdvec7c75ptkqJs6VlWEYLjNm2QDpWnGsIzAF+3Mlaw='
     Dynamsoft.WebTwainEnv.ProductKey =
-      'f0068NQAAACyMptTIXKyBr6qIbXRS0lZrq8O2MOXUBCZXgQZoS2BC73rJ+yg/UsO+u2RD2ZQaJi6gahHxi0FPUZ44ufcaeg8=;f0068NQAAAIGJBX/F85UzyTyklyoF7gYgF5WSbZqyVGNoITEDqIBePdvec7c75ptkqJs6VlWEYLjNm2QDpWnGsIzAF+3Mlaw='
-    // Dynamsoft.WebTwainEnv.ProductKey =
-    //   't0141cQMAACCG0RYaq6/crIMV/JeasnfXv3IDw4WHrIG1i57UR2yz+mIJxFHPd0KPR/VeuQLre6euCU2VfKVoSmcv+nGWYJAERq/MugsZzYKpzJHEaPTWshv/Y1b5+ZcEc2zGiXKjBeO5YZpHEf29Ic/8MVownhumeQqZj2ZopGC0YDw3xLVx8+Zm8gY1ma8m'
+      't0141cQMAACCG0RYaq6/crIMV/JeasnfXv3IDw4WHrIG1i57UR2yz+mIJxFHPd0KPR/VeuQLre6euCU2VfKVoSmcv+nGWYJAERq/MugsZzYKpzJHEaPTWshv/Y1b5+ZcEc2zGiXKjBeO5YZpHEf29Ic/8MVownhumeQqZj2ZopGC0YDw3xLVx8+Zm8gY1ma8m'
 
     Dynamsoft.WebTwainEnv.Load()
   },
@@ -225,11 +207,9 @@ export default {
       )
       this.DWObject.Flip(this.DWObject.CurrentImageIndexInBuffer)
     },
-
     checkIfImagesInBuffer() {
       return this.DWObject.HowManyImagesInBuffer == 0 ? false : true
     },
-
     Dynamsoft_OnPostTransfer() {
       this.updateLargeViewer()
     },
